@@ -1,4 +1,3 @@
-// src/navigation/AuthContext.js
 import React, { createContext, useState } from 'react';
 
 const AuthContext = createContext();
@@ -6,12 +5,14 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  const login = (username, password) => {
-    if (username && password) {
-      setUser(username);
-    } else {
-      alert('Kamu harus login');
-    }
+  const login = (email, password) => {
+    // Contoh autentikasi sederhana, di sini Anda dapat menambahkan logika autentikasi yang sesuai
+    setUser(email);
+  };
+
+  const register = (email, password) => {
+    // Contoh registrasi sederhana, di sini Anda dapat menambahkan logika registrasi yang sesuai
+    setUser(email);
   };
 
   const logout = () => {
@@ -19,7 +20,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

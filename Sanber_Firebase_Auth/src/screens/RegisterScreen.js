@@ -1,16 +1,21 @@
-// src/screens/RegisterScreen.js
 import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { AuthContext } from '../navigation/AuthContext';
 
 const RegisterScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useContext(AuthContext);
+  const { register } = useContext(AuthContext);
 
   const handleRegister = () => {
-    login(username, password);
-    navigation.navigate('Profile');
+    if (email && password) {
+      // Hanya melakukan registrasi jika email dan password diisi
+      register(email, password);
+      navigation.navigate('Profile'); // Navigate to Profile screen upon successful registration
+    } else {
+      // Menampilkan alert jika email atau password kosong
+      Alert.alert('Error', 'Email and password are required.');
+    }
   };
 
   return (
@@ -18,9 +23,11 @@ const RegisterScreen = ({ navigation }) => {
       <Text style={styles.title}>Create Account</Text>
       <TextInput
         style={styles.input}
-        placeholder="Username"
-        onChangeText={text => setUsername(text)}
-        value={username}
+        placeholder="Email"
+        onChangeText={text => setEmail(text)}
+        value={email}
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
