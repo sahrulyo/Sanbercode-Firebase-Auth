@@ -1,13 +1,18 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { AuthContext } from '../navigation/AuthContext';
+import { useRegisterController } from "./hook/register-controller"
 
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { register } = useContext(AuthContext);
+  const { register } = useRegisterController();
 
   const handleRegister = () => {
+    // const { register} = useRegisterController();
+    // const [email, setEmail] = useState("")
+    // const [password, setPassword] = useState("");
+
     if (email && password) {
       // Hanya melakukan registrasi jika email dan password diisi
       register(email, password);
