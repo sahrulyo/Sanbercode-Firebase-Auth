@@ -1,14 +1,19 @@
-// src/screens/ProfileScreen.js
 import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { AuthContext } from '../navigation/AuthContext';
+import { EmailAuthCredential } from 'firebase/auth';
+import { useLoginController } from './hook/login-controller';
 
 const ProfileScreen = ({ navigation }) => {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout } = useLoginController();
 
   const handleLogout = () => {
     logout();
-    navigation.navigate('Login');
+    // Navigate to the 'Login' screen after logout
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Logout' }],
+    });
   };
 
   return (
@@ -16,13 +21,18 @@ const ProfileScreen = ({ navigation }) => {
       <Text style={styles.title}>Profile</Text>
       {user ? (
         <>
-          <Text style={styles.username}>Username: {user}</Text>
+          <Text style={styles.username}>Username: {user.email}</Text>
           <TouchableOpacity style={styles.button} onPress={handleLogout}>
             <Text style={styles.buttonText}>Logout</Text>
           </TouchableOpacity>
         </>
       ) : (
-        <Text>Kamu harus login</Text>
+        <View style={styles.notLoggedInContainer}>
+          <Text style={styles.notLoggedInText}>You are not logged in.</Text>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   );
@@ -57,6 +67,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  notLoggedInContainer: {
+    alignItems: 'center',
+  },
+  notLoggedInText: {
+    marginBottom: 20,
   },
 });
 

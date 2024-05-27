@@ -1,19 +1,30 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { AuthContext } from '../navigation/AuthContext';
+import { useLoginController } from './hook/login-controller';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useContext(AuthContext);
+  const { login } = useLoginController();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (email && password) {
-      // Hanya melakukan login jika email dan password diisi
-      login(email, password);
-      navigation.navigate('Profile'); // Navigate to Profile screen upon successful login
+      try {
+        const response = await login(email, password);
+        if (response.success) {
+          navigation.navigate('Profile');
+          Alert.alert('Success', 'Login successful');
+          setEmail('');
+          setPassword('');
+
+        } else {
+          Alert.alert('Error', response.message);
+        }
+      } catch (error) {
+        console.error('Login Error:', error);
+        Alert.alert('Error', 'An error occurred during login');
+      }
     } else {
-      // Menampilkan alert jika email atau password kosong
       Alert.alert('Error', 'Email and password are required.');
     }
   };
