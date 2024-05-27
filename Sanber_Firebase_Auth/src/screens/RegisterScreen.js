@@ -9,10 +9,6 @@ const RegisterScreen = ({ navigation }) => {
   const { register } = useRegisterController();
 
   const handleRegister = () => {
-    // const { register} = useRegisterController();
-    // const [email, setEmail] = useState("")
-    // const [password, setPassword] = useState("");
-
     if (email && password) {
       // Hanya melakukan registrasi jika email dan password diisi
       register(email, password);
